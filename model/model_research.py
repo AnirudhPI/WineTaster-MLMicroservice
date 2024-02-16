@@ -48,3 +48,5 @@ model.fit(x_train_df,y_train_df,epochs=EPOCHS)
 
 test_loss, test_accuracy = model.evaluate(x_test_df,y_test_df)
 print(f"Evaluation Accuracy: {test_accuracy}")
+
+model.save("saved_model/1")
