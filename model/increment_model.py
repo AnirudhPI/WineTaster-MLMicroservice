@@ -1,6 +1,8 @@
 import keras
-from flaskserver.kafkaclient import KafkaClient
 import numpy as np
+import sys
+sys.path.append('../')
+from flaskserver.kafkaclient import KafkaClient
 
 TOPIC_NAME = "ml-model-train"
 BATCH_SIZE = 2

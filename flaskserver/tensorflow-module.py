@@ -37,6 +37,20 @@ def predict():
     raw = raw + "]]}"
     print(raw)
 
+    url = "http://localhost:8605/v1/models/inc_model:predict"
+    headers = {
+        'Content-Type': 'text/plain'
+    }
+    response = requests.request("POST", url, headers=headers, data=raw)
+    res_json=response.json()
+    print(res_json)
+    predictions=np.argmax(np.array(res_json["predictions"][0]))
+    print(predictions)
+
+    output={}
+    output["prediction"]=int(predictions)+3
+    return output
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
