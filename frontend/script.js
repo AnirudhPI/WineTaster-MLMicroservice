@@ -17,7 +17,7 @@ async function predict() {
         body: JSON.stringify(data)
     };
 
-    await fetch("http://localhost:5000/predict", settings).then(response => response.json()).then(
+    await fetch("http://localhost:5001/predict", settings).then(response => response.json()).then(
         function (response) {
             console.log("Response: ", response)
             document.getElementById("prediction").innerHTML = response.prediction;

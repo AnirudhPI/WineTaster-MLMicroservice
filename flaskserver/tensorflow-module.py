@@ -4,12 +4,13 @@ from flask import Flask
 from flask import request
 from flask.wrappers import Response
 from kafkaclient import KafkaClient
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import requests
 import numpy as np
 
 app = Flask(__name__)
-CORS(app)
+CORS(app,resources={r"/*": {"origins": ["http://localhost:5500", "http://127.0.0.1:5500"]}})
+
 
 OUTPUT_LEN = 6
 TOPIC_NAME = "ml-model-train"
@@ -17,11 +18,13 @@ TOPIC_NAME = "ml-model-train"
 producer = KafkaClient(TOPIC_NAME)
 
 @app.route("/")
+@cross_origin()
 def default():
-    return "The Flask app is Working"
+    return "Flask is working"
 
 # for predictions
 @app.route("/predict", methods=['GET', 'POST'])
+@cross_origin()
 def predict():
     print("Running prediction")
     print("Request Data:")
@@ -53,4 +56,4 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)
