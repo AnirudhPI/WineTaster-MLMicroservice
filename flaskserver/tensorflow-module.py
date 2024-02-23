@@ -54,6 +54,30 @@ def predict():
     output["prediction"]=int(predictions)+3
     return output
 
+@app.route("/annotate", methods=['GET', 'POST'])
+@cross_origin()
+def annotate():
+    X = []
+    Y = []
+    csv_x = ""
+    csv_y = ""
+    print("Request Data:")
+    data = loads(request.data.decode(encoding="ascii"))
+    print(data)
+    for key, value in data.items():
+        if key == "quality":
+            for i in range(OUTPUT_LEN):
+                if i == int(value)-3:
+                    csv_y += "1,"
+                else:
+                    csv_y += "0,"
+        else:
+            csv_x = csv_x+value+","
+    csv_x = csv_x[:-1]  # Remove extra ,
+    csv_y = csv_y[:-1]
+    return {"message": "Got it"}
+    producer.write_to_kafka(csv_x, csv_y)
+    return {"message": "Got it"}
 
 if __name__ == "__main__":
     app.run(debug=True, port=5001)

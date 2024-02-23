@@ -47,13 +47,14 @@ async function annotate() {
     };
     console.log(data)
 
-    await fetch("http://localhost:5000/annotate", settings).then(function (response) {
-        console.log("Response: ", response.json)
-        if (response.text == "Got it") {
+    await fetch("http://localhost:5001/annotate", settings).then(response => response.json())
+    .then(data => { 
+        console.log("Response is: ", data);
+        if (data.message === "Got it") {  
             document.getElementById("annotate.status").innerHTML = "Added!!";
             setTimeout(function () {
                 document.getElementById("annotate.status").innerHTML = "";
-            }, 2000)
+            }, 2000);
         }
     })
 }
