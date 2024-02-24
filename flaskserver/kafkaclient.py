@@ -4,6 +4,7 @@ from json import dumps, loads
 
 class KafkaClient:
     def __init__(self, topic_name=None, mode='producer'):
+        self.mode = mode
         self.topic_name = topic_name
         if mode == 'producer':
             self.client = KafkaProducer(
@@ -18,6 +19,18 @@ class KafkaClient:
                 value_deserializer=lambda x: loads(x.decode('utf-8')))
         else:
             raise ValueError("Consumer mode requires a topic_name")
+        
+    def __iter__(self):
+        if self.mode == 'consumer':
+            return self.client
+        else:
+            raise TypeError("Only KafkaClient in consumer mode can be iterated over")
+    
+    def __next__(self):
+        if self.mode == 'consumer':
+            return next(self.client)
+        else:
+            raise TypeError("Only KafkaClient in consumer mode can be iterated over")
 
     def error_callback(self, exception):
         raise Exception('Error while sending data to kafka: {0}'.format(str(exception)))
