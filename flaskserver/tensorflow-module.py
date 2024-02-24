@@ -15,7 +15,7 @@ CORS(app,resources={r"/*": {"origins": ["http://localhost:5500", "http://127.0.0
 OUTPUT_LEN = 6
 TOPIC_NAME = "ml-model-train"
 
-producer = KafkaClient(TOPIC_NAME)
+producer = KafkaClient(topic_name=TOPIC_NAME, mode="producer")
 
 @app.route("/")
 @cross_origin()
@@ -75,7 +75,7 @@ def annotate():
             csv_x = csv_x+value+","
     csv_x = csv_x[:-1]  # Remove extra ,
     csv_y = csv_y[:-1]
-    return {"message": "Got it"}
+    #return {"message": "Got it"}
     producer.write_to_kafka(csv_x, csv_y)
     return {"message": "Got it"}
 
